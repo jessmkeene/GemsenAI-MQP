@@ -1,0 +1,25 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+    paths: ["gemsen-prototype/**"]
+  pull_request:
+    paths: ["gemsen-prototype/**"]
+
+jobs:
+  lint-and-build:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: gemsen-prototype
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: gemsen-prototype/package-lock.json
+      - run: npm ci
+      - run: npm run lint
+      - run: npm run build
